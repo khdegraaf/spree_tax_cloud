@@ -90,7 +90,11 @@ module Spree
           })
           # Only attempt to verify address if user has configured their USPS account.
           if Spree::Config.taxcloud_usps_user_id.present?
-            address = address.verify
+            # Ignore exception, will just go with original address, dos2 fix
+            begin
+              address = address.verify
+            rescue
+            end
           end
           address.to_hash
         end
